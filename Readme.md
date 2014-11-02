@@ -5,5 +5,5 @@ Only object manipulation methods are supported at this point.
 To install:
 
 ```
-go get github.com/peterjliu/parse/client
+go get github.com/peterjliu/parseclient
 ```
