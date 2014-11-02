@@ -39,12 +39,14 @@ func (c Client) Headers() map[string]string {
 	}
 }
 
+const objPath = "https://api.parse.com/1/classes/"
+
 // Get Parse object and fill in struct
 func (c Client) GetObj(class, id string, out interface{}) error {
 	r := rest.Request{
 		Method:  rest.GET,
 		Headers: c.Headers(),
-		Url:     fmt.Sprintf("https://api.parse.com/1/classes/%s/%s", class, id),
+		Url:     fmt.Sprintf("%s/%s", objPath, class, id),
 	}
 	err := r.Do(&out)
 	if err != nil {
@@ -57,7 +59,7 @@ func (c Client) GetObj(class, id string, out interface{}) error {
 // Get Parse objects of a certain class with constraints specified by query.
 // An empty query means no constraints.
 func (c Client) GetObjList(class string, v url.Values, out interface{}) error {
-	u := fmt.Sprintf("https://api.parse.com/1/classes/%s", class)
+	u := fmt.Sprintf("%s/%s", objPath, class)
 	if v != nil {
 		u = fmt.Sprintf("%s?%s", u, v.Encode())
 	}
@@ -79,7 +81,7 @@ func (c Client) DeleteObj(class, id string, out interface{}) error {
 	r := rest.Request{
 		Method:  rest.DELETE,
 		Headers: c.Headers(),
-		Url:     fmt.Sprintf("https://api.parse.com/1/classes/%s/%s", class, id),
+		Url:     fmt.Sprintf("%s/%s/%s", objPath, class, id),
 	}
 	err := r.Do(&out)
 	if err != nil {
@@ -93,7 +95,7 @@ func (c Client) DeleteObj(class, id string, out interface{}) error {
 func (c Client) CreateObj(class, in interface{}) (*CreateResp, error) {
 	r := new(CreateResp)
 	err := rest.Post(
-		fmt.Sprintf("https://api.parse.com/1/classes/%s", class),
+		fmt.Sprintf("%s/%s", objPath, class),
 		c.Headers(),
 		in,
 		r)
@@ -107,7 +109,7 @@ func (c Client) CreateObj(class, in interface{}) (*CreateResp, error) {
 func (c Client) UpdateObj(class, id string, in interface{}) (*UpdateResp, error) {
 	var r UpdateResp
 	err := rest.Put(
-		fmt.Sprintf("https://api.parse.com/1/classes/%s/%s", class, id),
+		fmt.Sprintf("%s/%s/%s", objPath, class, id),
 		c.Headers(),
 		in,
 		&r)
@@ -124,7 +126,7 @@ func (c Client) GetObjMap(class, id string) (map[string]interface{}, error) {
 	r := rest.Request{
 		Method:  rest.GET,
 		Headers: c.Headers(),
-		Url:     fmt.Sprintf("https://api.parse.com/1/classes/%s/%s", class, id),
+		Url:     fmt.Sprintf("%s/%s/%s", objPath, class, id),
 	}
 	err := r.Do(&v)
 	if err != nil {
