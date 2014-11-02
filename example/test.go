@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"parse.com/client"
@@ -75,9 +76,11 @@ func main() {
 	}
 	fmt.Printf("%+v\n", g)
 
-	fmt.Print("\nGet List of Object\n")
+	fmt.Print("\nGet List of Object with query\n")
 	var gl GameScoreList
-	err = c.GetObjList("GameScore", &gl)
+	v := url.Values{}
+	v.Add("where", `{"playerName":"Sean Plott"}`)
+	err = c.GetObjList("GameScore", v, &gl)
 	if err != nil {
 		fmt.Print(err)
 	}

@@ -3,6 +3,7 @@ package client
 import (
 	"fmt"
 	"log"
+	"net/url"
 
 	"github.com/peterjliu/rest"
 )
@@ -53,12 +54,17 @@ func (c Client) GetObj(class, id string, out interface{}) error {
 	return nil
 }
 
-// Get Parse objects of a certain class
-func (c Client) GetObjList(class, out interface{}) error {
+// Get Parse objects of a certain class with constraints specified by query.
+// An empty query means no constraints.
+func (c Client) GetObjList(class string, v url.Values, out interface{}) error {
+	u := fmt.Sprintf("https://api.parse.com/1/classes/%s", class)
+	if v != nil {
+		u = fmt.Sprintf("%s?%s", u, v.Encode())
+	}
 	r := rest.Request{
 		Method:  rest.GET,
 		Headers: c.Headers(),
-		Url:     fmt.Sprintf("https://api.parse.com/1/classes/%s", class),
+		Url:     u,
 	}
 	err := r.Do(&out)
 	if err != nil {
