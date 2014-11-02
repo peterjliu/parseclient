@@ -16,6 +16,10 @@ type GameScore struct {
 	PlayerName string `json:"playerName,omitempty"`
 }
 
+type GameScoreList struct {
+	Results []GameScore `json:"results"`
+}
+
 // Assume parse app id and key are in a file separated by a new line
 var keyfile = flag.String("parsekeyfile", "parse-keys",
 	"location of file containing parse app id and api key")
@@ -70,6 +74,14 @@ func main() {
 		fmt.Print(err)
 	}
 	fmt.Printf("%+v\n", g)
+
+	fmt.Print("\nGet List of Object\n")
+	var gl GameScoreList
+	err = c.GetObjList("GameScore", &gl)
+	if err != nil {
+		fmt.Print(err)
+	}
+	fmt.Printf("%+v\n", gl)
 
 	err = c.DeleteObj("GameScore", r.ObjectId, GameScore{PlayerName: "Henry"})
 	if err != nil {

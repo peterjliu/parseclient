@@ -54,7 +54,7 @@ func (c Client) GetObj(class, id string, out interface{}) error {
 }
 
 // Get Parse objects of a certain class
-func (c Client) GetList(class, out interface{}) error {
+func (c Client) GetObjList(class, out interface{}) error {
 	r := rest.Request{
 		Method:  rest.GET,
 		Headers: c.Headers(),
